@@ -8,31 +8,32 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { LoginSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/actions/login";
+import { register } from "@/actions/register";
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
 
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
 
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof RegisterSchema>>({
+        resolver: zodResolver(RegisterSchema),
         defaultValues: {
             email: "",
-            password: ""
+            password: "",
+            name: ""
         },
     })
 
-    const handleLogin = async (value: z.infer<typeof LoginSchema>) => {
+    const handleRegister = async (value: z.infer<typeof RegisterSchema>) => {
         setError("")
         setSuccess("")
 
         startTransition(() => {
-            login(value)
+            register(value)
                 .then((data) => {
                     setError(data.error)
                     setSuccess(data.sucess)
@@ -42,16 +43,30 @@ export const LoginForm = () => {
 
     return (
         <CardWrapper
-            headerLaberl="Welcome back"
-            backButtonLabel="Don't have an account?"
-            backButtonHref="/auth/register"
+            headerLaberl="Create an account"
+            backButtonLabel="Already have an account?"
+            backButtonHref="/auth/login"
             showSocial
         >
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(handleLogin)}
+                    onSubmit={form.handleSubmit(handleRegister)}
                     className="flex flex-col gap-5 w-full mt-4 max-w-5xl mb-5"
                 >
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input type="text" placeholder="John Doe" disabled={isPending} className="h-10" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
                     <FormField
                         control={form.control}
                         name="email"
@@ -84,7 +99,7 @@ export const LoginForm = () => {
                     <FormSuccess message={success} />
 
                     <Button type="submit" disabled={isPending}>
-                        Log In
+                        Create an Account
                     </Button>
                 </form>
             </Form>
