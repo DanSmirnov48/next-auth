@@ -38,6 +38,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token.role = existingUser.role
 
             return token
+        },
+        async signIn({ user, account }) {
+            if (account?.provider !== 'credentials') return true
+
+            const existingUser = await getUserById(user.id)
+
+            if (!existingUser?.emailVerified) return false
+
+            return true
         }
     },
     events: {
