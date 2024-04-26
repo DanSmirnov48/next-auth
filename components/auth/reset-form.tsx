@@ -8,36 +8,33 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { LoginSchema } from "@/schemas";
+import { ResetSchema } from "@/schemas";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 import { useSearchParams } from 'next/navigation'
 import Link from "next/link";
+import { reset } from "@/actions/reset";
 
-export const LoginForm = () => {
-
-    const searchParams = useSearchParams()
-    const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider" : "";
+export const ResetForm = () => {
 
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
 
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof ResetSchema>>({
+        resolver: zodResolver(ResetSchema),
         defaultValues: {
             email: "",
-            password: ""
         },
     })
 
-    const handleLogin = async (value: z.infer<typeof LoginSchema>) => {
+    const handleReset = async (value: z.infer<typeof ResetSchema>) => {
         setError("")
         setSuccess("")
 
         startTransition(() => {
-            login(value)
+            reset(value)
                 .then((data) => {
                     setError(data.error)
                     setSuccess(data.success)
@@ -47,14 +44,13 @@ export const LoginForm = () => {
 
     return (
         <CardWrapper
-            headerLaberl="Welcome back"
-            backButtonLabel="Don't have an account?"
-            backButtonHref="/auth/register"
-            showSocial
+            headerLaberl="Forgot your password?"
+            backButtonLabel="Back to login"
+            backButtonHref="/auth/login"
         >
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(handleLogin)}
+                    onSubmit={form.handleSubmit(handleReset)}
                     className="flex flex-col gap-5 w-full mt-4 max-w-5xl mb-5"
                 >
                     <FormField
@@ -71,30 +67,11 @@ export const LoginForm = () => {
                         )}
                     />
 
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input type="password" disabled={isPending} className="h-10" {...field} />
-                                </FormControl>
-                                <Button size={"sm"} variant={"link"} asChild className="px-0 font-light">
-                                    <Link href="/auth/reset">
-                                        Forgot password?
-                                    </Link>
-                                </Button>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormError message={error || urlError} />
+                    <FormError message={error} />
                     <FormSuccess message={success} />
 
                     <Button type="submit" disabled={isPending}>
-                        Log In
+                        Send Reset email
                     </Button>
                 </form>
             </Form>
