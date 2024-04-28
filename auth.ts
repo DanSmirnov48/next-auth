@@ -10,6 +10,7 @@ declare module "next-auth" {
     interface Session {
         user: {
             role: UserRole,
+            is2FAEnabled: boolean
         } & DefaultSession["user"]
     }
 }
@@ -27,6 +28,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (token.role && session.user) {
                 session.user.role = token.role as UserRole
             }
+
+            if (session.user) {
+                session.user.is2FAEnabled = token.is2FAEnabled as boolean
+            }
             return session
         },
         async jwt({ token }) {
@@ -37,6 +42,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (!existingUser) return token;
 
             token.role = existingUser.role
+            token.is2FAEnabled = existingUser.is2FAEnabled
 
             return token
         },
