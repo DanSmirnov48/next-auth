@@ -1,7 +1,7 @@
 'use client'
 
 import { logout } from "@/actions/logout";
-import { useCurrentUser } from "@/hooks/useCurrentuser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const SettingsPage = () => {
 

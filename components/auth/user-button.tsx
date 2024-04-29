@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
-import { useCurrentUser } from "@/hooks/useCurrentuser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import LogoutButton from "./logout-button";
 import { LogOut } from "lucide-react";
 

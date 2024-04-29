@@ -1,7 +1,7 @@
 'use client'
 
 import UserInfo from '@/components/user-info'
-import { useCurrentUser } from '@/hooks/useCurrentuser'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 import React from 'react'
 
 const ServerPage = () => {
