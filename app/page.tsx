@@ -22,7 +22,7 @@ export default function Home() {
         </h1>
         <p className="text-white text-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
         <div>
-          <LoginButton>
+          <LoginButton mode="model">
             <Button variant={'outline'} size={'lg'}>Sign In</Button>
           </LoginButton>
         </div>

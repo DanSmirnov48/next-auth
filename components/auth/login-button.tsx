@@ -1,6 +1,8 @@
 'use client'
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import { LoginForm } from './login-form';
 
 interface LoginButtonProps {
     children: React.ReactNode;
@@ -18,7 +20,14 @@ const LoginButton = ({ children, mode = 'redirect', asChild }: LoginButtonProps)
 
     if (mode === 'model') {
         return (
-            <span>This will be a model</span>
+            <Dialog>
+                <DialogTrigger asChild>
+                    {children}
+                </DialogTrigger>
+                <DialogContent className='p-0 w-auto bg-transparent border-none'>
+                    <LoginForm />
+                </DialogContent>
+            </Dialog>
         )
     }
 
