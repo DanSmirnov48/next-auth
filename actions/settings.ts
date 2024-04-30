@@ -8,6 +8,7 @@ import { getUserByEmail, getUserById } from "@/prisma/user";
 import { SettingsSchema } from "@/schemas"
 import * as z from "zod";
 import bcryptjs from 'bcryptjs'
+import { unstable_update as update } from '@/auth'
 
 export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     const user = await currentUser()
@@ -51,10 +52,19 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
         values.newPassword = undefined
     }
 
-    await db.user.update({
+    const updatedUser = await db.user.update({
         where: { id: dbUser.id },
         data: {
             ...values
+        }
+    })
+
+    update({
+        user: {
+            name: updatedUser.name,
+            email: updatedUser.email,
+            is2FAEnabled: updatedUser.is2FAEnabled,
+            role: updatedUser.role,
         }
     })
 

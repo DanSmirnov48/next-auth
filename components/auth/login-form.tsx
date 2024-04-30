@@ -19,6 +19,7 @@ export const LoginForm = () => {
 
     const searchParams = useSearchParams()
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider" : "";
+    const callBackUrl = searchParams.get("callbackUrl")
 
     const [show2FA, setShow2FA] = useState(false)
     const [isPending, startTransition] = useTransition()
@@ -38,7 +39,7 @@ export const LoginForm = () => {
         setSuccess("")
 
         startTransition(() => {
-            login(value)
+            login(value, callBackUrl)
                 .then((data) => {
                     if (data.error) {
                         form.reset()

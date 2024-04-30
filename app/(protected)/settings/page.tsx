@@ -46,13 +46,13 @@ const SettingsPage = () => {
     const onSubmit = async (value: z.infer<typeof SettingsSchema>) => {
         startTransition(() => {
             settings(value)
-                .then((data) => {
+                .then(async (data) => {
                     if (data.error) {
                         form.reset()
                         setError(data.error)
                     }
                     if (data.success) {
-                        update()
+                        await update()
                         form.reset()
                         setSuccess(data.success)
                     }
