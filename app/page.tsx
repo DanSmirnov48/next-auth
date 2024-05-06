@@ -1,32 +1,35 @@
-import { Poppins } from "next/font/google";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import LoginButton from "@/components/auth/login-button";
 
-const font = Poppins({
-  subsets: ["latin"],
-  weight: ["600"],
-});
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { SiteHeader } from "@/components/site-header";
 
-export default function Home() {
+export default function IndexPage() {
   return (
-    <main className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
-      <div className="space-y-6 text-center">
-        <h1
-          className={cn(
-            "text-6xl font-semibold text-white drop-shadow-md",
-            font.className
-          )}
-        >
-          Next Auth
-        </h1>
-        <p className="text-white text-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div>
-          <LoginButton mode="model">
-            <Button variant={'outline'} size={'lg'}>Sign In</Button>
-          </LoginButton>
+    <>
+      <SiteHeader />
+      <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
+        <div className="flex max-w-[980px] flex-col items-start gap-2">
+          <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
+            Beautifully designed components <br className="hidden sm:inline" />
+            built with Radix UI and Tailwind CSS.
+          </h1>
+          <p className="max-w-[700px] text-lg text-muted-foreground">
+            Accessible and customizable components that you can copy and paste
+            into your apps. Free. Open Source. And Next.js 13 Ready.
+          </p>
         </div>
-      </div>
-    </main>
+        <div className="flex gap-4">
+          <Link href="/signin" className={buttonVariants()}>
+            Sign in
+          </Link>
+          <Link
+            href="signup"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Sign up
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }
