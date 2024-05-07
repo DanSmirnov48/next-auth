@@ -143,11 +143,11 @@ export const LoginForm = () => {
                                         <FormItem>
                                             <div className="flex justify-between mt-2">
                                                 <FormLabel className="shad-form_label">Password</FormLabel>
-                                                <Link href="/auth/reset" className="text-xs text-gray-500 dark:text-gray-300 hover:underline">Forget Password?</Link>
+                                                <Link href="/auth/reset" className="text-xs text-gray-500 dark:text-gray-300 hover:underline">Forgot your password?</Link>
                                             </div>
                                             <div className="relative">
                                                 <FormControl className="flex-grow pr-10">
-                                                    <Input type={type} maxLength={35} placeholder="Password" className="block w-full px-4 py-2 h-12" {...field} onFocus={() => setError(undefined)} />
+                                                    <Input type={type} maxLength={35} className="block w-full px-4 py-2 h-12" {...field} onFocus={() => setError(undefined)} />
                                                 </FormControl>
                                                 <span className="absolute right-3 top-3 cursor-pointer" onClick={handleToggle}>
                                                     {type === 'password' ? <Eye /> : <EyeOff />}
