@@ -23,6 +23,7 @@ import {
 import { UserRole } from "@prisma/client";
 import { Switch } from "@/components/ui/switch"
 import { useSession } from 'next-auth/react'
+import { UserAvatar } from "./user-avatar";
 
 const UserForm = () => {
     const user = useCurrentUser()
@@ -40,6 +41,7 @@ const UserForm = () => {
             newPassword: undefined,
             role: user?.role || undefined,
             is2FAEnabled: user?.is2FAEnabled || undefined,
+            image: user?.image || undefined,
         },
     })
 
@@ -71,6 +73,8 @@ const UserForm = () => {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="flex flex-col gap-5 w-full mt-4 max-w-5xl mb-5"
                     >
+                        {user?.image && <UserAvatar user={user} className="h-20 w-20 self-center" />}
+
                         <FormField
                             control={form.control}
                             name="name"
