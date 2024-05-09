@@ -2,6 +2,7 @@
 
 import { signIn } from "@/auth";
 import { db } from "@/lib/db";
+import { rateLimitByIp } from "@/lib/limiter";
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken, generateTwoFactorToken } from "@/lib/tokens";
 import { getTwoFactorConfirmationByUserId } from "@/prisma/two-factor-confirmation";
@@ -13,6 +14,12 @@ import { AuthError } from "next-auth";
 import * as z from "zod";
 
 export const login = async (values: z.infer<typeof LoginSchema>, callBackUrl?: string | null) => {
+
+    const errorResponse = await rateLimitByIp(5, 10000)
+    if (errorResponse?.error) {
+        return { error: "Rate Limit exceeded" }
+    }
+
     const validatedFields = LoginSchema.safeParse(values)
     if (!validatedFields.success) {
         return { error: "Invalid fields" }
@@ -69,8 +76,9 @@ export const login = async (values: z.infer<typeof LoginSchema>, callBackUrl?: s
 
         } else {
             const twoFactorToken = await generateTwoFactorToken(existingUser.email)
+            console.log({ twoFactorToken })
 
-            await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token)
+            // await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token)
 
             return { twoFactor: true }
         }
